@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practicetown Workspace</title>
+    <script src="https://kit.fontawesome.com/5c1b3dc79f.js" crossorigin="anonymous"></script>
+    <style>
+        /* === PROFESSIONAL DARK THEME (GitHub Palette) === */
+        :root {
+            --bg-main: #0d1117;          /* Tiefstes Schwarz-Blau */
+            --bg-card: #161b22;          /* Etwas helleres Panel */
+            --border-default: #30363d;   /* Subtile Linien */
+            --border-hover: #8b949e;     /* Hover-Linien */
+            --text-main: #c9d1d9;        /* Klarer, heller Text */
+            --text-muted: #8b949e;       /* Grauer Nebentext */
+            --accent: #58a6ff;           /* Klares Blau für Highlights */
+            
+            /* Buttons */
+            --btn-bg: #21262d;
+            --btn-border: rgba(240, 246, 252, 0.1);
+            --btn-hover: #30363d;
+            --btn-primary-bg: #238636;   /* Das bekannte Pro-Grün */
+            --btn-primary-hover: #2ea043;
+            
+            --radius: 8px;
+            --transition: 0.2s ease;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-main); 
+            color: var(--text-main); 
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* === TOP NAVIGATION === */
+        .top-nav { 
+            display: flex; 
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px; 
+            background-color: rgba(13, 17, 23, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-default);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+        .brand i { color: var(--accent); font-size: 1.4rem; }
+
+        /* === BUTTONS === */
+        .btn {
+            background-color: var(--btn-bg);
+            color: var(--text-main);
+            border: 1px solid var(--btn-border);
+            padding: 8px 18px;
+            border-radius: var(--radius);
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all var(--transition);
+        }
+        .btn:hover { 
+            background-color: var(--btn-hover); 
+            border-color: var(--border-hover); 
+        }
+
+        .btn-primary {
+            background-color: var(--btn-primary-bg);
+            color: #ffffff;
+            border-color: transparent;
+        }
+        .btn-primary:hover { 
+            background-color: var(--btn-primary-hover); 
+            border-color: transparent; 
+        }
+
+        /* === APP DASHBOARD HEADER === */
+        .dashboard-header {
+            text-align: center;
+            padding: 60px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .dashboard-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+        .dashboard-header p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+        }
+
+        /* === PRODUCTS GRID === */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 40px 80px;
+            width: 100%;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        /* === PRODUCT CARDS === */
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-default);
+            border-radius: var(--radius);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform var(--transition), border-color var(--transition);
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: var(--border-hover);
+        }
+
+        .card-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-bottom: 1px solid var(--border-default);
+            background-color: var(--bg-main);
+        }
+
+        .card-body {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .card-title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+        .card-price {
+            font-weight: 600;
+            color: var(--text-muted);
+            background-color: var(--bg-main);
+            border: 1px solid var(--border-default);
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+
+        .card-desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 24px;
+            flex-grow: 1;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        /* === NETWORK MODAL === */
+        .modal-overlay {
+            position: fixed; inset: 0;
+            background-color: rgba(1, 4, 9, 0.85);
+            backdrop-filter: blur(5px);
+            z-index: 100;
+            display: flex; justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none;
+            transition: opacity var(--transition);
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: all; }
+        
+        .modal-content {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-default);
+            border-radius: 12px;
+            width: 90%; max-width: 700px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            transform: scale(0.95);
+            transition: transform var(--transition);
+            overflow: hidden;
+        }
+        .modal-overlay.active .modal-content { transform: scale(1); }
+
+        .modal-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--border-default);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--bg-card);
+        }
+        .modal-header h2 { font-size: 1.3rem; font-weight: 600; }
+        
+        .modal-close {
+            background: transparent; border: none; color: var(--text-muted);
+            font-size: 1.5rem; cursor: pointer; transition: color var(--transition);
+        }
+        .modal-close:hover { color: var(--text-main); }
+
+        .modal-body { 
+            padding: 24px; 
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+        }
+
+        .app-item {
+            display: flex; align-items: center; gap: 16px;
+            padding: 16px; border: 1px solid var(--border-default);
+            border-radius: var(--radius); background-color: var(--bg-main);
+            cursor: pointer; transition: all var(--transition);
+        }
+        .app-item:hover { 
+            background-color: var(--btn-hover); 
+            border-color: var(--border-hover); 
+        }
+        .app-icon {
+            width: 40px; height: 40px;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-default);
+            border-radius: 8px;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 1.2rem; color: var(--accent);
+        }
+        .app-info { display: flex; flex-direction: column; }
+        .app-info strong { font-size: 1rem; color: var(--text-main); }
+        .app-info span { font-size: 0.8rem; color: var(--text-muted); }
+
+    </style>
+</head>
+<body>
+
+    <nav class="top-nav">
+        <div class="brand">
+            <i class="fa-solid fa-code"></i> Practicetown
+        </div>
+        <button onclick="openAppsModal()" class="btn">
+            <i class="fa-solid fa-layer-group"></i> Network Apps
+        </button>
+    </nav>
+
+    <header class="dashboard-header">
+        <h1>Workspace Extensions</h1>
+        <p>Premium blueprints and modules designed perfectly for your Pterodactyl panel.</p>
+    </header>
+
+    <main class="container">
+        <div class="grid">
+            
+            <article class="card">
+                <img src="./assets/Pstatistics_v1.3_white_banner.png" alt="Pstatistics Banner" class="card-img" onerror="this.src='https://via.placeholder.com/400x180/161b22/8b949e?text=Pstatistics'">
+                <div class="card-body">
+                    <div class="card-title-row">
+                        <h3 class="card-title">Pstatistics</h3>
+                        <span class="card-price">€4.00</span>
+                    </div>
+                    <p class="card-desc">View your RAM, CPU and much more with this extension. Built for high performance monitoring.</p>
+                    <div class="card-footer">
+                        <button class="btn btn-primary">
+                            <i class="fa-solid fa-cart-shopping"></i> Purchase
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="card">
+                <img src="./assets/PTheme_banner_2.png" alt="Ptheme Banner" class="card-img" onerror="this.src='https://via.placeholder.com/400x180/161b22/8b949e?text=Ptheme'">
+                <div class="card-body">
+                    <div class="card-title-row">
+                        <h3 class="card-title">Ptheme_Crimson</h3>
+                        <span class="card-price">€2.00</span>
+                    </div>
+                    <p class="card-desc">A sleek red theme for your panel. Replaces standard CSS with an optimized dark-red aesthetic.</p>
+                    <div class="card-footer">
+                        <button class="btn btn-primary">
+                            <i class="fa-solid fa-cart-shopping"></i> Purchase
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+        </div>
+    </main>
+
+    <div id="appsModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Practicetown Network</h2>
+                <button class="modal-close" onclick="closeAppsModal()">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                
+                <div class="app-item" onclick="openExternalLink('https://watchpaste.practicetown.eu')">
+                    <div class="app-icon"><i class="fa-solid fa-paste"></i></div>
+                    <div class="app-info">
+                        <strong>WatchPaste</strong>
+                        <span>Code & Text Sharing</span>
+                    </div>
+                </div>
+
+                <div class="app-item" onclick="openExternalLink('https://me.practicetown.eu')">
+                    <div class="app-icon"><i class="fa-solid fa-user-tie"></i></div>
+                    <div class="app-info">
+                        <strong>cryxfncs</strong>
+                        <span>Personal Portfolio</span>
+                    </div>
+                </div>
+
+                <div class="app-item" onclick="openExternalLink('https://chat.practicetown.eu/')">
+                    <div class="app-icon"><i class="fa-solid fa-robot"></i></div>
+                    <div class="app-info">
+                        <strong>Practicetown GPT</strong>
+                        <span>AI Assistant</span>
+                    </div>
+                </div>
+
+                <div class="app-item" onclick="openExternalLink('https://guns.practicetown.eu')">
+                    <div class="app-icon"><i class="fa-solid fa-crosshairs"></i></div>
+                    <div class="app-info">
+                        <strong>Portfolios</strong>
+                        <span>Agency Work</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- MODAL LOGIC ---
+        function openAppsModal() {
+            document.getElementById('appsModal').classList.add('active');
+        }
+        function closeAppsModal() {
+            document.getElementById('appsModal').classList.remove('active');
+        }
+
+        // Close on background click
+        document.getElementById('appsModal').addEventListener('click', function(e) {
+            if (e.target === this) { closeAppsModal(); }
+        });
+
+        // --- TAURI API INTEGRATION ---
+        async function openExternalLink(url) {
+            try {
+                if (window.__TAURI__ && window.__TAURI__.opener) {
+                    await window.__TAURI__.opener.open(url);
+                } else {
+                    window.open(url, '_blank');
+                }
+            } catch (e) {
+                console.error("Link-Error:", e);
+            }
+        }
+    </script>
+</body>
+</html>
